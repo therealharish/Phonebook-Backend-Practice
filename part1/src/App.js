@@ -1,24 +1,33 @@
-import Hello from "./components/Hello.js"
+import React from 'react'
+import {useState} from 'react'
 
-const footer = () => {
-  return (
-    <div>
-      greeting app created by <a href="https://github.com/mluukkai">mluukkai</a>
-    </div>
+// This is the right place to define a component
+const Button = (props) => (
+    <button onClick={props.handleClick}>
+      {props.text}
+    </button>
   )
+
+const Display = props => <div>{props.value}</div>
+  
+const App = () => {
+const [value, setValue] = useState(10)
+
+const setToValue = newValue => {
+    console.log('value now', newValue)
+    setValue(newValue)
 }
 
-const App = () => {
-  const name = "Harish"
-  const age = 20
-  return (
-  <div>
-    <Hello name = {name} age = {age}/>
-    <footer />
-  </div>
-)}
+
+return (
+    <div>
+    <Display value={value} />
+    <Button handleClick={() => setToValue(1000)} text="thousand" />
+    <Button handleClick={() => setToValue(0)} text="reset" />
+    <Button handleClick={() => setToValue(value + 1)} text="increment" />
+    </div>
+)
+}
 
 
-
-
-export default App
+  export default App

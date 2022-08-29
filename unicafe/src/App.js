@@ -1,27 +1,39 @@
-import Header from './components/Header.js'
-import Content from './components/Content.js'
-import Total from './components/Total.js'
+import React from 'react'
+import {useState} from 'react'
+import Button from './components/Button.js'
+import Statistics from './components/Statistics.js'
 
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+  
+
+  const incrementGood = () => {
+    setGood(good+1)
+  }
+
+  const incrementNeutral = () => {
+    setNeutral(neutral+1)
+  }
+
+  const incrementBad = () => {
+    setBad(bad+1)
+  }
 
   return (
     <div>
-      <Header course = {course} />
-      <Content  part1 = {part1} exercises1 = {exercises1} 
-                part2 = {part2} exercises2 = {exercises2}
-                part3 = {part3} exercises3 = {exercises3}
-      />
-      <Total exercises1 = {exercises1} exercises2 = {exercises2} exercises3 = {exercises3} />
+      <h1>Give Feedback</h1>
+      <Button text = "good" handleClick = {incrementGood} />
+      <Button text = "bad" handleClick = {incrementBad} />
+      <Button text = "neutral" handleClick = {incrementNeutral} />
+      <Statistics good = {good} bad = {bad} neutral = {neutral} />
+      
     </div>
   )
 }
 
 export default App
+
