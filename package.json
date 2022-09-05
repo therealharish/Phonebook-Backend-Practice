@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/therealharish/Phonebook-Backend-Practice/issues"
   },
-  "homepage": "https://github.com/therealharish/Phonebook-Backend-Practice#readme"
+  "homepage": "https://github.com/therealharish/Phonebook-Backend-Practice#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
