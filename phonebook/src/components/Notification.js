@@ -1,6 +1,5 @@
 import './components.css'
 const Notification = ({message}) => {
-    console.log(message, "23");
     if(message === null) {
         return null
     }

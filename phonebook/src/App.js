@@ -80,7 +80,6 @@ const App = () => {
     
   }
 
-
   const handleNewNameAdd =(event) => {
     setNewName(event.target.value)
   }
