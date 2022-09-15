@@ -1,5 +1,13 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
+app.use(express.json())
+
+app.use(morgan(':method :url :status :response-time :data'))
+
+morgan.token('data', function (req, res) {
+  return JSON.stringify(req.body)
+})
 
 const d = new Date()
 let persons = [
@@ -29,11 +37,18 @@ const info = `<p>Phonebook has info for ${persons.length} people</p>
               ${d}`
 
 
-const generateID = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
+const generateID = () => {
+  const min = 1
+  const max = 1000
   return Math.floor(Math.random() * (max - min + 1) + min); 
 }
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// app.use(unknownEndpoint)
+
 
 
 app.get('/api/persons', (request, response) => {
@@ -67,25 +82,32 @@ app.delete("/api/persons/:id", (request, response)=> {
   response.status(204).end()
 })
 
-app.post("api/persons", (request, response)=> {
+app.post("/api/persons", (request, response) => {
   
   const body = request.body
-  console.log(body)
+
+
   if(!body.name){
-    response.status(400).json({
+    return response.status(400).json({
       error: "Name missing"
     })
   }
   if(!body.number){
-    response.status(400).json({
+    return response.status(400).json({
       error: "Number missing"
     })
   }
 
+  if(persons.find(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: "name must be unique"
+    })
+  }
+
   const person = {
-    id: generateID(1,1000),
+    id: generateID(),
     name: body.name,
-    number: body.number
+    number: body.number,
   }
 
   persons = persons.concat(person)

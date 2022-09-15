@@ -1,25 +1,14 @@
-t = int(input())
-for _ in range(t):
-	n = int(input())
-	a = list(map(int, input().split()))
-	b = list(map(int, input().split()))
-	flag = 0
-	if (a == b):
-		print("YES")
-	else:
-		i = 0
-		while (i < n - 1):
-			if(a[i] == b[i]):
-        i += 1
-      elif(a[-1] != b[-1] and a[-1] <= a[0]):
-				a[-1] += 1
-      elif(b[i] < a[i]):
-				print("NO")
-				flag = 1
-				break
-			elif(a[i] < b[i] and a[i] <= a[i + 1]):
-				a[i] += 1
-      else:
-        i+=1 
-	if (flag == 0):
-		print("YES")
+class Computer: 
+	def __init__(self, price1, ver1):
+		self.price = price1
+		self.ver = ver1
+		print("Creating instance of Computer Class")
+
+class Person:
+	def __init__(self, name, age):
+		self.name = name
+		self.age = age
+		print("Creating instanc of Person class")
+
+c1 = Computer(90000, 3.9)
+p1 = Person("Harish", 25)
