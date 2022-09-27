@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
@@ -6,6 +7,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.static('build'))  
 app.use(morgan(':method :url :status :response-time :data'))
+const Contact = require('./models/contact')
 
 morgan.token('data', function (req, res) {
   return JSON.stringify(req.body)
@@ -106,14 +108,15 @@ app.post("/api/persons", (request, response) => {
     })
   }
 
-  const person = {
-    id: generateID(),
+  const person = new Contact({
     name: body.name,
     number: body.number,
-  }
+  })
 
-  persons = persons.concat(person)
-  response.json(person)
+  person.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
+  
 })
 
 

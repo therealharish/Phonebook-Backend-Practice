@@ -1,29 +1,31 @@
-class Computer:
-    brand = "HP"
-    def __init__(self, price1, ver1):
-        self.price = price1
-        self.ver = ver1
+from abc import ABCMeta, abstractmethod
 
-    def buy(self):
-        print("Buying computer")
+class Product(metaclass = ABCMeta):
+    @abstractmethod
+    def return_policy(self):
+        pass
 
-    def exchange(self):
-        print("Exchanging Computer")
+class Furniture(Product):
+    def return_policy(self):
+        print("Hello World!")
 
-    def getPrice(self):
-        print(self.__price)
+class Mobile(Product):
+    def return_policy(self):
+        print ("All mobiles must be returned within 10 days of purchase")
 
+class Shoe(Product):
+    def return_policy(self):
+        print ("All shoes must be returned within 7 days of purchase")
 
-def display(l):
-    for i in l:
-        print(i.price, i.ver, i.brand)
+# p = Product()
+# p.return_policy()
 
-c1 = Computer(90000, "3.5")
-c2 = Computer(80000, '3.4')
-c3 = Computer(70000, '3.3')
-c4 = Computer(60000, '3.2')
+m=Mobile()
+m.return_policy()
 
-l = [c1, c2, c3, c4]
+s=Shoe()
+s.return_policy()
 
-display(l)
-
+f=Furniture()
+f.return_policy()
+                                                    
