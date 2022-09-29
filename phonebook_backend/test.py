@@ -1,31 +1,27 @@
-from abc import ABCMeta, abstractmethod
+# from collections import deque
+# stack = deque([])
+# stack.append("A")
+# stack.append("B")
+# stack.append("C")
+# stack.append("D")
+# print("Initial Stack: ", list(stack))
 
-class Product(metaclass = ABCMeta):
-    @abstractmethod
-    def return_policy(self):
-        pass
+# for i in range(4):
+#     print(stack.pop())
 
-class Furniture(Product):
-    def return_policy(self):
-        print("Hello World!")
+from queue import LifoQueue
+stack = LifoQueue()
+stack.put("A")
+stack.put("B")
+stack.put("C")
+stack.put("D")
+print("Initial Stack Size: ", stack.qsize())
+print("Initial Stack Full: ", stack.full())
+print("Initial Stack: ", stack.queue)
+for i in range(4):
+    print(stack.get())
+    print(stack.empty())
 
-class Mobile(Product):
-    def return_policy(self):
-        print ("All mobiles must be returned within 10 days of purchase")
 
-class Shoe(Product):
-    def return_policy(self):
-        print ("All shoes must be returned within 7 days of purchase")
 
-# p = Product()
-# p.return_policy()
 
-m=Mobile()
-m.return_policy()
-
-s=Shoe()
-s.return_policy()
-
-f=Furniture()
-f.return_policy()
-                                                    
