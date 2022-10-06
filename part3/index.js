@@ -42,10 +42,20 @@ app.get("/api/notes", (request, response) => {
 
 app.get("/api/notes/:id", (request,response) => {
     const id = request.params.id
-    Note.findById(id).then(foundNote => {
-      response.json(foundNote)
+    Note
+      .findById(id)
+      .then(note => {
+        if(note){
+          response.json(note)
+        } else {
+          response.status(404).end()
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        response.status(400).send({error: 'malformatted id'})
+      })
     })
-})
 
 app.delete("/api/notes/:id", (request,response) => {
     const id = Number(request.params.id)

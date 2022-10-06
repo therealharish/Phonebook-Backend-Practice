@@ -4,6 +4,7 @@ import Filter from './components/Filter'
 import Notification from './components/Notification'
 import PersonsToShow from './components/PersonsToShow'
 import contactServices from './services/contactServices'
+import './App.css';
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -104,28 +105,28 @@ const App = () => {
 
   if(persons){
     return (
-    <div>
-
-      <h2>Phonebook</h2>
-      <Notification message = {notification}/>
-      <Filter filter = {filter} handleFilterChange = {handleFilterChange} />
-      <h2>Add a new</h2>
-      <AddNewNumber 
-        newName = {newName} 
-        handleNewNameAdd = {handleNewNameAdd} 
-        newNumber = {newNumber} 
-        handleNewNumberChange = {handleNewNumberChange} 
-        handleFormSubmit = {handleFormSubmit} 
-      />
-      <h2>Numbers</h2>
-      <PersonsToShow 
-        personsToShow = {personsToShow} 
-        setPersonsToShow = {setPersonsToShow} 
-        setPersons = {setPersons} 
-        persons = {persons}
-        notification = {notification}
-        setNotification = {setNotification}
-      />
+    <div className = 'desktop-1'>
+      <div className = "frame-1">
+        <h2 className = "phonebook">Phonebook</h2>
+        <Notification message = {notification}/>
+        <Filter filter = {filter} handleFilterChange = {handleFilterChange} />
+        <AddNewNumber 
+          newName = {newName} 
+          handleNewNameAdd = {handleNewNameAdd} 
+          newNumber = {newNumber} 
+          handleNewNumberChange = {handleNewNumberChange} 
+          handleFormSubmit = {handleFormSubmit} 
+        />
+        <h2>Numbers</h2>
+        <PersonsToShow 
+          personsToShow = {personsToShow} 
+          setPersonsToShow = {setPersonsToShow} 
+          setPersons = {setPersons} 
+          persons = {persons}
+          notification = {notification}
+          setNotification = {setNotification}
+        />
+      </div>
     </div>
   )}
   else {

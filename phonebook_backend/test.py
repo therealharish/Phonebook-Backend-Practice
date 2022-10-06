@@ -1,27 +1,28 @@
-# from collections import deque
-# stack = deque([])
-# stack.append("A")
-# stack.append("B")
-# stack.append("C")
-# stack.append("D")
-# print("Initial Stack: ", list(stack))
+class Queue:
+    def __init__(self, maxsize):
+        self.__maxsize = maxsize
+        self.__q = [None] * maxsize
+        self.__front = 0
+        self.__rear = -1
 
-# for i in range(4):
-#     print(stack.pop())
+    def enqueue(self, ele):
+        if self.is_full():
+            print("Queue is Full")
+            return
+        self.__rear += 1
+        self.__q[self.__rear] = ele
 
-from queue import LifoQueue
-stack = LifoQueue()
-stack.put("A")
-stack.put("B")
-stack.put("C")
-stack.put("D")
-print("Initial Stack Size: ", stack.qsize())
-print("Initial Stack Full: ", stack.full())
-print("Initial Stack: ", stack.queue)
-for i in range(4):
-    print(stack.get())
-    print(stack.empty())
+    def is_full(self):
+        return self.__rear == (self.__maxsize - 1)
 
+    def is_empty(self):
+        return self.__rear == -1
+
+    def show(self):
+        print(self.__q)
 
 
-
+q = Queue(5)
+for i in range(6):
+    q.enqueue(i)
+    q.show()

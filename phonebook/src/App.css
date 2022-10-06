@@ -2,6 +2,33 @@
   text-align: center;
 }
 
+.desktop-1 {
+align-items : flex-start;
+background-color : var(--white);
+border: 1px none;
+display: flex;
+height: 1024px;
+padding: 318px 439px;
+position : relative;
+width: 1448px;
+}
+
+.frame-1 {
+align-items: center ;
+background-color: #d9d9d9 ;
+border: 1px solid;
+border-color: var(--black) ;
+border-radius: 28px;
+box-shadow: Bpx 4px 4px #000ee048 ;
+display:flex;
+flex-direction : column ;
+gap: 18px;
+height: 367px;
+justify-content : center;
+padding: Bpx 18px;
+width: 546px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +62,71 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Main-Frame {
+  /* Frame 1 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px 10px;
+gap: 10px;
+
+position: absolute;
+width: 563px;
+left: calc(50% - 563px/2 - 0.5px);
+top: calc(50% - 364px/2 - 9px);
+
+
+background: #D9D9D9;
+border: 1px solid #ffffff;
+box-shadow: 0px 8px 8px rgba(255, 255, 255, 0.25);
+border-radius: 20px;
+}
+
+.add-a-new {
+  /* Add a new */
+
+width: 103px;
+height: 24px;
+left: 143px;
+top: 9.5px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 800;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+}
+
+.phonebook {
+  /* Phonebook */
+
+
+width: 113px;
+height: 24px;
+
+font-family: 'Inter';
+font-style: normal;
+font-weight: 800;
+font-size: 20px;
+line-height: 24px;
+
+color: #000000;
+
+
+/* Inside auto layout */
+
+flex: none;
+order: 0;
+flex-grow: 0;
 }

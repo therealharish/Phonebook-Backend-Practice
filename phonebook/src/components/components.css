@@ -37,6 +37,23 @@ body {
 	animation: fade-in .65s ease-in forwards;
 }
 
+.add-new-contact {
+	/* Add New Contact */
+
+
+width: 385px;
+
+background: #A7B3D2;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 20px;
+
+/* Inside auto layout */
+
+flex: none;
+order: 2;
+flex-grow: 0;
+}
+
 @keyframes scale-in {
 	100% {
 		transform: scale(1);
@@ -66,3 +83,4 @@ body {
 		opacity: .8;
 	}
 }
+
