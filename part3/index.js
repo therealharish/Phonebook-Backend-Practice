@@ -29,7 +29,6 @@ let notes = [
     }
 ]
 
-
 app.get("/", (request, response) => {
     response.send('<h1>Hello World!<h1>')
 })
@@ -40,7 +39,7 @@ app.get("/api/notes", (request, response) => {
   }) 
 })
 
-app.get("/api/notes/:id", (request,response) => {
+app.get("/api/notes/:id", (request,response, next) => {
     const id = request.params.id
     Note
       .findById(id)
@@ -51,16 +50,17 @@ app.get("/api/notes/:id", (request,response) => {
           response.status(404).end()
         }
       })
-      .catch(error => {
-        console.log(error)
-        response.status(400).send({error: 'malformatted id'})
-      })
+      .catch(error => next(error))
     })
 
 app.delete("/api/notes/:id", (request,response) => {
-    const id = Number(request.params.id)
-    notes = notes.filter(note => note.id!==id)
-    response.status(204).end()
+    const id = request.params.id
+    Note
+      .findByIdAndRemove(id)
+      .then(result => {
+        response.status(204).end()
+      })
+      .catch(error => next(error)) //next error is used because we now have a middleware to do it
 })
 
 const generateId = () => {
@@ -90,7 +90,37 @@ app.post('/api/notes', (request, response) => {
     })
 })
 
+app.put('/api/notes/:id', (request, response) => {
+  const body = request.body
+  const id = request.params.id
+  const note = {
+    content: body.content,
+    important: body.important
+  }
+  Note
+    .findByIdAndUpdate(id, note, {new: true})
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
+})  
+
 const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on Port: ${PORT}`)
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({error: 'unknown endpoint'})
+}
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if(error.name === 'CastError') {
+    return response.status(400).send({error: 'malformatted id'})
+  }
+  next(error)
+}
+
+app.use(unknownEndpoint)
+app.use(errorHandler)
