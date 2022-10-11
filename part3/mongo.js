@@ -43,3 +43,11 @@ mongoose
     mongoose.connection.close()
   })
   .catch((err) => console.log(err))
+
+
+  sum = 0
+  function clac(arr, n1, n2){
+    for (var i = n1; i<=n2; i++){
+      sum+=arr[i]
+    }
+  }
