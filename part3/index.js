@@ -70,7 +70,7 @@ const generateId = () => {
     return maxId + 1
   }
 
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
     const body = request.body
   
     if (!body.content) {
@@ -85,20 +85,36 @@ app.post('/api/notes', (request, response) => {
       date: new Date(),
     })
   
-    note.save().then(savedNote => {
-      response.json(savedNote)
-    })
+    note
+      .save()
+      .then(savedNote => {
+        response.json(savedNote)
+      })
+      .catch(error => next(error))
 })
 
 app.put('/api/notes/:id', (request, response) => {
-  const body = request.body
+  // this was before we started using validators intro - 3d
+  // const body = request.body
+  // const id = request.params.id
+  // const note = {
+  //   content: body.content,
+  //   important: body.important
+  // }
+  // Note
+  //   .findByIdAndUpdate(id, note, {new: true, runValidators})
+  //   .then(updatedNote => {
+  //     response.json(updatedNote)
+  //   })
+  //   .catch(error => next(error))
+
+  const {content, important} = request.body
   const id = request.params.id
-  const note = {
-    content: body.content,
-    important: body.important
-  }
   Note
-    .findByIdAndUpdate(id, note, {new: true})
+    .findByIdAndUpdate(id,
+      {content,  important},
+      {new: true, runValidators: true, context:'query'}
+      )
     .then(updatedNote => {
       response.json(updatedNote)
     })
@@ -118,6 +134,9 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if(error.name === 'CastError') {
     return response.status(400).send({error: 'malformatted id'})
+  }
+  else if(error.name === "ValidationError"){
+    return response.status(400).send({error: error.message  })
   }
   next(error)
 }
