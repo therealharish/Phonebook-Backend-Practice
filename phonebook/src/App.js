@@ -8,7 +8,6 @@ import './App.css';
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [personsToShow, setPersonsToShow] = useState([])
