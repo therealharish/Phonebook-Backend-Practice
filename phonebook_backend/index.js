@@ -12,6 +12,7 @@ morgan.token('data', function (req, res) {
 })
 
 const Contact = require('./models/contact')
+const { update } = require('./models/contact')
 
 
 
@@ -49,13 +50,6 @@ const generateID = () => {
   return Math.floor(Math.random() * (max - min + 1) + min); 
 }
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
-// app.use(unknownEndpoint)
-
-
 
 app.get('/api/persons', (request, response) => {
     Contact.find({}).then(contact => {
@@ -71,23 +65,47 @@ app.get("/info", (request, response)=> {
   response.send(info)
 })
 
-app.get("/api/persons/:id", (request, response)=> {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  if(person == null) {
-    response.status(400).json({
-      error:"Person Missing"
-    })
-  }
-  else {
-    response.json(person)
-  }
-})
+app.get("/api/persons/:id", (request, response, next)=> {
+  const id = request.params.id
 
-app.delete("/api/persons/:id", (request, response)=> {
-  const id = Number(request.params.id)
-  persons  = persons.filter(person => person.id!==id)
-  response.status(204).end()
+  //previous code when people were an object
+  // const person = persons.find(person => person.id === id)
+  // if(person == null) {
+  //   response.status(400).json({
+  //     error:"Person Missing"
+  //   })
+  // }
+  // else {
+  //   response.json(person)
+  // }
+
+  Contact
+    .findById(id)
+    .then(person => {
+      if(person) {
+        response.json(person)
+      }
+      else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => next(error))
+    })
+
+app.delete("/api/persons/:id", (request, response, next)=> {
+
+  // made when persons was an object
+  // const id = Number(request.params.id)
+  // persons  = persons.filter(person => person.id!==id)
+  // response.status(204).end()
+
+  id = request.params.id
+  Contact
+    .findByIdAndRemove(id)
+    .then(result => {
+      response.status(400).end()
+    })
+    .catch(error => next(error))
 })
 
 app.post("/api/persons", (request, response) => {
@@ -112,7 +130,6 @@ app.post("/api/persons", (request, response) => {
   //     error: "name must be unique"
   //   })
   // }
-
   const person = new Contact({
     name: body.name,
     number: body.number,
@@ -124,7 +141,38 @@ app.post("/api/persons", (request, response) => {
   
 })
 
+app.put("/api/persons/:id", (request, response, next) => {
+  const body = request.body
+  const id = request.params.id
+  const newNum = {
+    name: body.name,
+    number: body.number
+  }
 
+  Contact
+    .findByIdAndUpdate(id, newNum, {new: true})
+    .then(updatedNum => {
+      response.json(updatedNum)
+    })
+    .catch(error => next(error))
+})
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if(error.name == "CastError") {
+    response.status(400).send({error: 'malformed id'})
+  }
+  next(error)
+}
+
+app.use(errorHandler)
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
